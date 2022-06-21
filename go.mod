@@ -33,6 +33,7 @@ require (
 	github.com/docker/cli v20.10.17+incompatible
 	github.com/docker/distribution v2.8.1+incompatible
 	github.com/docker/docker v20.10.17+incompatible
+	github.com/docker/go-connections v0.4.0
 	github.com/dustin/go-humanize v1.0.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.5.7
@@ -108,7 +109,6 @@ require (
 	github.com/cyberphone/json-canonicalization v0.0.0-20220216171627-b6721b06b4ef // indirect
 	github.com/docker/docker-credential-helpers v0.6.4 // indirect
 	github.com/docker/go v1.5.1-1.0.20160303222718-d30aec9fd63c // indirect
-	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect

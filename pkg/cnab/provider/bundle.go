@@ -25,9 +25,9 @@ func (r *Runtime) ProcessBundleFromFile(bundleFile string) (cnab.ExtendedBundle,
 	return r.ProcessBundle(b)
 }
 
-func (r *Runtime) ParseBundle(ctx context.Context, b cnab.ExtendedBundle, args ActionArguments, cfg *config.Config) {
+func (r *Runtime) ParseBundle(ctx context.Context, b *cnab.ExtendedBundle, args ActionArguments, cfg *config.Config) {
 
-	stamp, err := configadapter.LoadStamp(b)
+	stamp, err := configadapter.LoadStamp(*b)
 	if err := errors.Wrap(err, "Failed to load stamp from bundle"); err != nil {
 		return
 	}
@@ -45,11 +45,15 @@ func (r *Runtime) ParseBundle(ctx context.Context, b cnab.ExtendedBundle, args A
 	}
 
 	rm := runtime.NewRuntimeManifest(cfg.Context, "runtime", &m)
+
 	step := manifest.Step{
-		Data: m.Custom,
+		Data: b.Custom,
 	}
+
 	rm.ResolveStep(&step)
-	m.Custom = step.Data
+
+	b.Custom = step.Data
+
 }
 
 func (r *Runtime) ProcessBundle(b cnab.ExtendedBundle) (cnab.ExtendedBundle, error) {

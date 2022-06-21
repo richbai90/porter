@@ -301,7 +301,7 @@ func (e *dependencyExecutioner) executeDependency(ctx context.Context, dep *queu
 
 	var executeErrs error
 	fmt.Fprintf(e.Out, "Executing dependency %s...\n", dep.Alias)
-	err = e.CNAB.Execute(ctx, depArgs)
+	err = e.CNAB.Execute(ctx, depArgs, e.Config)
 	if err != nil {
 		executeErrs = multierror.Append(executeErrs, errors.Wrapf(err, "error executing dependency %s", dep.Alias))
 

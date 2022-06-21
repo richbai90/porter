@@ -25,5 +25,5 @@ func (p *Porter) ExecuteAction(ctx context.Context, installation storage.Install
 		return err
 	}
 
-	return p.CNAB.Execute(ctx, actionArgs)
+	return p.CNAB.Execute(ctx, actionArgs, p.Config)
 }

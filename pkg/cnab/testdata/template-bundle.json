@@ -1,0 +1,109 @@
+{
+    "custom": {
+        "io.cnab.docker": {
+            "mounts": [
+                {
+                    "ReadOnly": false,
+                    "Source": "{{ bundle.parameters.src }}",
+                    "Target": "/target",
+                    "Type": "bind"
+                }
+            ],
+            "privileged": false
+        },
+        "io.cnab.parameter-sources": {
+            "porter-state": {
+                "priority": [
+                    "output"
+                ],
+                "sources": {
+                    "output": {
+                        "name": "porter-state"
+                    }
+                }
+            }
+        },
+        "sh.porter": {
+            "commit": "309db88e",
+            "manifest": "bmFtZTogcG9ydGVyX3Rlc3QKdmVyc2lvbjogMC4xLjEKc2NoZW1hVmVyc2lvbjogMS4wLjAtYWxwaGEuMQpkZXNjcmlwdGlvbjogIkEgc2ltcGxlIHRlc3QiCnJlZ2lzdHJ5OiBsb2NhbGhvc3Q6NTAxNQpwYXJhbWV0ZXJzOgogIC0gbmFtZTogc3JjCiAgICB0eXBlOiBzdHJpbmcKICAgIHNlbnNpdGl2ZTogZmFsc2UKICAgIGFwcGx5VG86CiAgICAgIC0gcnVudGltZQpyZXF1aXJlZDoKICAtIGRvY2tlcjoKICAgICAgcHJpdmlsZWdlZDogZmFsc2UKICAgICAgbW91bnRzOgogICAgICAgIC0gVHlwZTogImJpbmQiCiAgICAgICAgICBTb3VyY2U6ICJ7eyBidW5kbGUucGFyYW1ldGVycy5zcmMgfX0iCiAgICAgICAgICBUYXJnZXQ6ICIvdGFyZ2V0IgogICAgICAgICAgUmVhZE9ubHk6IGZhbHNlCm1peGluczoKICAtIGRvY2tlcgogIC0gZXhlYwoKaW5zdGFsbDoKICAtIGRvY2tlcjoKICAgICAgZGVzY3JpcHRpb246ICJTdW1tb24gTWluaW9uIgogICAgICBydW46CiAgICAgICAgaW1hZ2U6ICJ3YWl0OmxhdGVzdCIKCgp1bmluc3RhbGw6CiAgLSBleGVjOgogICAgICBkZXNjcmlwdGlvbjogUmVtb3ZlIHRlc3RpbmcgY29udGFpbmVyCiAgICAgIGNvbW1hbmQ6IGVjaG8gInVuaW5zdGFsbGVkIgogICAgICAK",
+            "manifestDigest": "1e3e1262ef3b9d8c8ef36abcec8644754ae34b4b872c56e14946d32f1313e15a",
+            "mixins": {
+                "docker": {
+                    "version": "v0.2.3-2-g8b08238"
+                },
+                "exec": {
+                    "version": "v1.0.0-alpha.20-65-g309db88e"
+                }
+            },
+            "version": "v1.0.0-alpha.20-65-g309db88e"
+        },
+        "sh.porter.file-parameters": {}
+    },
+    "definitions": {
+        "porter-debug-parameter": {
+            "$comment": "porter-internal",
+            "$id": "https://porter.sh/generated-bundle/#porter-debug",
+            "default": false,
+            "description": "Print debug information from Porter when executing the bundle",
+            "type": "boolean"
+        },
+        "porter-state": {
+            "$comment": "porter-internal",
+            "$id": "https://porter.sh/generated-bundle/#porter-state",
+            "contentEncoding": "base64",
+            "description": "Supports persisting state for bundles. Porter internal parameter that should not be set manually.",
+            "type": "string"
+        },
+        "src-parameter": {
+            "type": "string"
+        }
+    },
+    "description": "Test with templates",
+    "invocationImages": [
+        {
+            "image": "localhost:5015/porter_test:7e78f7be5730c5025569a95caa751594",
+            "imageType": "docker"
+        }
+    ],
+    "name": "Template Test",
+    "outputs": {
+        "porter-state": {
+            "definition": "porter-state",
+            "description": "Supports persisting state for bundles. Porter internal parameter that should not be set manually.",
+            "path": "/cnab/app/outputs/porter-state"
+        }
+    },
+    "parameters": {
+        "porter-debug": {
+            "definition": "porter-debug-parameter",
+            "description": "Print debug information from Porter when executing the bundle",
+            "destination": {
+                "env": "PORTER_DEBUG"
+            }
+        },
+        "porter-state": {
+            "definition": "porter-state",
+            "description": "Supports persisting state for bundles. Porter internal parameter that should not be set manually.",
+            "destination": {
+                "path": "/porter/state.tgz"
+            }
+        },
+        "src": {
+            "applyTo": [
+                "runtime"
+            ],
+            "definition": "src-parameter",
+            "destination": {
+                "env": "SRC"
+            },
+            "required": true
+        }
+    },
+    "requiredExtensions": [
+        "sh.porter.file-parameters",
+        "io.cnab.parameter-sources",
+        "io.cnab.docker"
+    ],
+    "schemaVersion": "v1.0.0",
+    "version": "0.1.1"
+}

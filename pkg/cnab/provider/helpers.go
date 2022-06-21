@@ -69,11 +69,11 @@ func (t *TestRuntime) LoadTestBundle(bundleFile string) cnab.ExtendedBundle {
 	return bun
 }
 
-func (t *TestRuntime) Execute(ctx context.Context, args ActionArguments) error {
+func (t *TestRuntime) Execute(ctx context.Context, args ActionArguments, _ *config.Config) error {
 	if args.Driver == "" {
 		args.Driver = debugDriver
 	}
-	return t.Runtime.Execute(ctx, args)
+	return t.Runtime.Execute(ctx, args, t.TestConfig.Config)
 }
 
 func (t *TestRuntime) MockGetDockerGroupId() {

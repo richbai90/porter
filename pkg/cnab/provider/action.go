@@ -135,7 +135,7 @@ func (r *Runtime) Execute(ctx context.Context, args ActionArguments, cfg *config
 			return log.Error(errors.New("action is required"))
 		}
 
-		r.ParseBundle(ctx, args.BundleReference.Definition, args, cfg)
+		r.ParseBundle(ctx, &args.BundleReference.Definition, args, cfg)
 
 		b, err := r.ProcessBundle(args.BundleReference.Definition)
 		if err != nil {

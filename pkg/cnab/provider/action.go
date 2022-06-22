@@ -117,7 +117,7 @@ func (r *Runtime) AddRelocation(args ActionArguments) action.OperationConfigFunc
 	}
 }
 
-func (r *Runtime) Execute(ctx context.Context, args ActionArguments) error {
+func (r *Runtime) Execute(ctx context.Context, args ActionArguments, cfg *config.Config) error {
 	// Check if we've been asked to stop before executing long blocking calls
 	select {
 	case <-ctx.Done():
@@ -134,6 +134,8 @@ func (r *Runtime) Execute(ctx context.Context, args ActionArguments) error {
 		if args.Action == "" {
 			return log.Error(errors.New("action is required"))
 		}
+
+		r.ParseBundle(ctx, &args.BundleReference.Definition, args, cfg)
 
 		b, err := r.ProcessBundle(args.BundleReference.Definition)
 		if err != nil {

@@ -51,6 +51,10 @@ type SuppressesOutput interface {
 	SuppressesOutput() bool
 }
 
+type AsyncStep interface {
+	Async() bool
+}
+
 // HasErrorHandling is implemented by mixin commands that want to handle errors
 // themselves, and possibly allow failed commands to either pass, or to improve
 // the displayed error message
@@ -67,6 +71,7 @@ type ExitError interface {
 // a single step is allowed to be defined in the Action (which is what happens when Porter
 // executes steps one at a time).
 func ExecuteSingleStepAction(cxt *portercontext.Context, action ExecutableAction) (string, error) {
+
 	steps := action.GetSteps()
 	if len(steps) != 1 {
 		return "", fmt.Errorf("expected a single step, but got %d", len(steps))
@@ -100,6 +105,7 @@ func ExecuteSingleStepAction(cxt *portercontext.Context, action ExecutableAction
 // ExecuteStep runs the command represented by an ExecutableStep, piping stdout/stderr
 // back to the context and returns the buffered output for subsequent processing.
 func ExecuteStep(pctx *portercontext.Context, step ExecutableStep) (string, error) {
+
 	ctx := context.TODO()
 
 	// Identify if any suffix arguments are defined
@@ -174,12 +180,20 @@ func ExecuteStep(pctx *portercontext.Context, step ExecutableStep) (string, erro
 		}
 	}
 
+	async := false
+	asyncStep, ok := step.(AsyncStep)
+	if ok {
+		async = asyncStep.Async()
+	}
+
 	err := cmd.Start()
 	if err != nil {
 		return "", fmt.Errorf("couldn't run command %s: %w", prettyCmd, err)
 	}
-
-	err = cmd.Wait()
+	if !async {
+		// async commands run in the background and do not report any error
+		err = cmd.Wait()
+	}
 
 	// Check if the command knows how to handle and recover from its own errors
 	if err != nil {
